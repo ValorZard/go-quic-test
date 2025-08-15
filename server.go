@@ -46,6 +46,8 @@ func main() {
 				return
 			}
 			stream.Write([]byte("Hello from server!"))
+			// Uncomment the following line to make the code work
+			time.Sleep(5 * time.Second)
 			stream.Close()
 			c.CloseWithError(0, "Connection closed by server")
 			println("Connection closed:", c.RemoteAddr())
