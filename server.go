@@ -72,6 +72,8 @@ func main() {
 }
 
 // generateTLSConfig creates a self-signed TLS config for testing
+// I don't particually care about TLS since I won't be running this in the browser.
+// I'm interested in QUIC functionality for native applications
 func generateTLSConfig() (*tls.Config, error) {
 	key, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
