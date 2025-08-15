@@ -54,9 +54,17 @@ func main() {
 				return
 			}
 			stream.Write([]byte("Hello from server!"))
-			// Uncomment the following line to make the code work
-			//time.Sleep(5 * time.Second)
-			stream.Close()
+			data := make([]byte, 1024)
+			size, err := stream.Read(data)
+			if err != nil {
+				println("Error reading from stream:", err)
+				return
+			}
+			message := string(data[:size])
+			println("Received data:", message)
+			if message == "exit" {
+				stream.Close()
+			}
 			c.CloseWithError(0, "Connection closed by server")
 			println("Connection closed:", c.RemoteAddr())
 		}(conn)

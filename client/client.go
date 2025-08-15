@@ -45,5 +45,6 @@ func main() {
 		panic(err)
 	}
 	println("Received data:", string(data[:size]))
+	stream.Write([]byte("exit"))
 	cancel() // Cancel the context to close the connection gracefully
 }
