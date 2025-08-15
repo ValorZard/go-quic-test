@@ -2,8 +2,10 @@ module example.com/go-quic-test
 
 go 1.25.0
 
+require github.com/quic-go/quic-go v0.54.0
+
 require (
-	github.com/quic-go/quic-go v0.54.0 // indirect
+	github.com/francoispqt/gojay v1.2.13 // indirect
 	go.uber.org/mock v0.5.0 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/mod v0.18.0 // indirect

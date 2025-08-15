@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"log"
 	"net"
 	_ "net/http/pprof"
+	"os"
 	"time"
 
 	"github.com/quic-go/quic-go"
+	"github.com/quic-go/quic-go/qlog"
 )
 
 func main() {
@@ -20,7 +23,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	conn, err := quic.Dial(ctx, udpConn, udpAddr, &tls.Config{InsecureSkipVerify: true}, &quic.Config{})
+	path, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	os.Setenv("QLOGDIR", path+"/qlog")
+	conn, err := quic.Dial(ctx, udpConn, udpAddr, &tls.Config{InsecureSkipVerify: true}, &quic.Config{Tracer: qlog.DefaultConnectionTracer})
 	if err != nil {
 		panic(err)
 	}

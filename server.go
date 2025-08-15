@@ -6,12 +6,15 @@ import (
 	"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
+	"log"
 	"math/big"
 	"net"
 	_ "net/http/pprof"
+	"os"
 	"time"
 
 	"github.com/quic-go/quic-go"
+	"github.com/quic-go/quic-go/qlog"
 )
 
 func main() {
@@ -26,7 +29,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	quicConf := quic.Config{}
+	path, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	os.Setenv("QLOGDIR", path+"/qlog")
+	quicConf := quic.Config{Tracer: qlog.DefaultConnectionTracer}
 	ln, err := tr.Listen(tlsConf, &quicConf)
 	if err != nil {
 		panic(err)
@@ -47,7 +55,7 @@ func main() {
 			}
 			stream.Write([]byte("Hello from server!"))
 			// Uncomment the following line to make the code work
-			time.Sleep(5 * time.Second)
+			//time.Sleep(5 * time.Second)
 			stream.Close()
 			c.CloseWithError(0, "Connection closed by server")
 			println("Connection closed:", c.RemoteAddr())
